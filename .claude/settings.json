@@ -20,7 +20,8 @@
       "Bash(npx shadcn@latest init --defaults)",
       "Bash(npx shadcn@latest add card badge button table tabs progress dialog input label select separator skeleton)",
       "Bash(npm run *)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "WebFetch(domain:openrouter.ai)"
     ]
   }
 }

@@ -70,4 +70,5 @@ public class BetSuggestion
     public double KellyFraction { get; set; }   // % bankroll recommandé
     public bool IsValueBet { get; set; }        // true si ValueEdge > seuil
     public string Bookmaker { get; set; } = string.Empty;
+    public double ConfidenceScore { get; set; } // score confiance individuel 0-100
 }

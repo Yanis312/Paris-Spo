@@ -1,3 +1,4 @@
+using ParisSpo.AI.Services;
 using ParisSpo.Domain.Interfaces;
 using ParisSpo.Infrastructure.Config;
 using ParisSpo.Infrastructure.ExternalApis;
@@ -22,6 +23,12 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IFootballDataService, FootballDataService>();
 builder.Services.AddScoped<IOddsService, TheOddsApiService>();
 builder.Services.AddScoped<MatchSyncService>();
+
+// AI — OpenRouter avec fallback infini sur modèles gratuits
+var openRouterKey = builder.Configuration["OpenRouter:ApiKey"] ?? "";
+builder.Services.AddSingleton(new OpenRouterKernelFactory(openRouterKey));
+builder.Services.AddScoped<FallbackKernelExecutor>();
+builder.Services.AddScoped<IAiAnalysisService, MatchAnalysisAgent>();
 
 // GraphQL
 builder.Services
