@@ -1,17 +1,29 @@
 using ParisSpo.Domain.Interfaces;
 using ParisSpo.Infrastructure.Config;
+using ParisSpo.Infrastructure.ExternalApis;
 using ParisSpo.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection("MongoDB"));
+// MongoDB
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
 
+// External APIs config
+builder.Services.Configure<FootballDataSettings>(builder.Configuration.GetSection("FootballData"));
+builder.Services.Configure<TheOddsApiSettings>(builder.Configuration.GetSection("TheOddsApi"));
+
+// Repositories
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 builder.Services.AddScoped<IBetRepository, BetRepository>();
 builder.Services.AddScoped<IBankrollRepository, BankrollRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
+// External services
+builder.Services.AddScoped<IFootballDataService, FootballDataService>();
+builder.Services.AddScoped<IOddsService, TheOddsApiService>();
+builder.Services.AddScoped<MatchSyncService>();
+
+// GraphQL
 builder.Services
     .AddGraphQLServer()
     .AddQueryType()
@@ -20,6 +32,8 @@ builder.Services
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.BankrollQuery>()
     .AddMutationType()
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.BetMutation>()
+    .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.SyncMutation>()
+    .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.AiMutation>()
     .AddMongoDbFiltering()
     .AddMongoDbSorting()
     .AddMongoDbProjections()
