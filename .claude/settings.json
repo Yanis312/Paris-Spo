@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(dotnet new *)",
+      "Bash(dotnet --version)",
+      "Bash(dotnet sln *)",
+      "Bash(dotnet add *)",
+      "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.Domain\\\\Class1.cs\")",
+      "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.Infrastructure\\\\Class1.cs\")",
+      "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.AI\\\\Class1.cs\")",
+      "Bash(dotnet build *)"
+    ]
+  }
+}
