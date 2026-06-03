@@ -15,7 +15,12 @@
       "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.Domain\\\\Class1.cs\")",
       "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.Infrastructure\\\\Class1.cs\")",
       "Bash(del \"C:\\\\Users\\\\Surfagest\\\\Documents\\\\Paris spo\\\\ParisSpo.AI\\\\Class1.cs\")",
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Bash(npx create-next-app@latest frontend --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npx shadcn@latest init --defaults)",
+      "Bash(npx shadcn@latest add card badge button table tabs progress dialog input label select separator skeleton)",
+      "Bash(npm run *)",
+      "Bash(npx next *)"
     ]
   }
 }
