@@ -1,0 +1,33 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.local
+appsettings.Development.json
+appsettings.Local.json
+
+# Secrets
+*.env
+.env
+.env.local
+.env.production
+secrets.json
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+frontend/.env.production
+
+# MongoDB
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/settings.json
