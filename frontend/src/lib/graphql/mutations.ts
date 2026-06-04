@@ -13,6 +13,29 @@ export const SYNC_TODAY_MATCHES = gql`
   }
 `;
 
+export const ANALYZE_TODAY_MATCHES = gql`
+  mutation AnalyzeTodayMatches {
+    analyzeTodayMatches {
+      id
+      aiAnalysis {
+        homeWinProbability
+        drawProbability
+        awayWinProbability
+        confidenceScore
+        suggestions {
+          market
+          description
+          bookmakerOdds
+          valueEdge
+          kellyFraction
+          isValueBet
+          bookmaker
+        }
+      }
+    }
+  }
+`;
+
 export const PLACE_BET = gql`
   mutation PlaceBet($input: PlaceBetInput!) {
     placeBet(input: $input) {

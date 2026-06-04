@@ -12,6 +12,7 @@ builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("Mo
 // External APIs config
 builder.Services.Configure<FootballDataSettings>(builder.Configuration.GetSection("FootballData"));
 builder.Services.Configure<TheOddsApiSettings>(builder.Configuration.GetSection("TheOddsApi"));
+builder.Services.Configure<SportApi7Settings>(builder.Configuration.GetSection("SportApi7"));
 
 // Repositories
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
@@ -19,9 +20,10 @@ builder.Services.AddScoped<IBetRepository, BetRepository>();
 builder.Services.AddScoped<IBankrollRepository, BankrollRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
-// External services
-builder.Services.AddScoped<IFootballDataService, FootballDataService>();
-builder.Services.AddScoped<IOddsService, TheOddsApiService>();
+// External services — SportAPI7 (Sofascore) = source principale matchs + cotes réelles
+builder.Services.AddScoped<SportApi7Service>();
+builder.Services.AddScoped<IFootballDataService>(sp => sp.GetRequiredService<SportApi7Service>());
+builder.Services.AddScoped<IOddsService>(sp => sp.GetRequiredService<SportApi7Service>());
 builder.Services.AddScoped<MatchSyncService>();
 
 // AI — OpenRouter avec fallback infini sur modèles gratuits
@@ -41,6 +43,7 @@ builder.Services
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.BetMutation>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.SyncMutation>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.AiMutation>()
+    .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.TestMutation>()
     .AddMongoDbFiltering()
     .AddMongoDbSorting()
     .AddMongoDbProjections()
