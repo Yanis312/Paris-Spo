@@ -56,7 +56,13 @@
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { syncMatchesByDate\\(date: \\\\\\\\\\\\\"2026-06-06T00:00:00Z\\\\\\\\\\\\\"\\) { homeTeamName awayTeamName } }\\\\\"}\")",
       "Bash(grep -iA6 \"error\\\\|exception\\\\|fail\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { syncMatchesByDate\\(date: \\\\\\\\\\\\\"2026-06-06T00:00:00Z\\\\\\\\\\\\\"\\) { homeTeamName } }\\\\\"}\")",
-      "Bash(grep -iA10 \"error\\\\|exception\" \"C:\\\\Users\\\\SURFAG~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Surfagest-Documents-Paris-spo\\\\139eca2e-5f5b-4e17-9c75-4dc7fa4ab605\\\\tasks\\\\bpjthnqk0.output\")"
+      "Bash(grep -iA10 \"error\\\\|exception\" \"C:\\\\Users\\\\SURFAG~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Surfagest-Documents-Paris-spo\\\\139eca2e-5f5b-4e17-9c75-4dc7fa4ab605\\\\tasks\\\\bpjthnqk0.output\")",
+      "Bash(curl -s \"https://sportapi7.p.rapidapi.com/api/v1/sport/football/scheduled-events/2026-06-07\" -H \"x-rapidapi-host: sportapi7.p.rapidapi.com\" -H \"x-rapidapi-key: fd7d3dbcecmshbb0a699ece459d3p1aa184jsn15829af60cc1\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { seedTestMatches { id homeTeamName awayTeamName } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName aiAnalysis { confidenceScore suggestions { description valueEdge isValueBet } } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ todayMatches { id homeTeamName awayTeamName odds { homeWin } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName awayTeamName aiAnalysis { homeWinProbability awayWinProbability confidenceScore suggestions { description bookmakerOdds valueEdge isValueBet } } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName awayTeamName odds { homeWin } aiAnalysis { suggestions { description bookmakerOdds valueEdge isValueBet } } } }\\\\\"}\")"
     ]
   }
 }

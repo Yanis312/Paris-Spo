@@ -20,9 +20,9 @@ builder.Services.AddScoped<IBetRepository, BetRepository>();
 builder.Services.AddScoped<IBankrollRepository, BankrollRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
-// External services — SportAPI7 (Sofascore) = source principale matchs + cotes réelles
+// External services — football-data.org = matchs, SportAPI7 = cotes (si quota dispo)
 builder.Services.AddScoped<SportApi7Service>();
-builder.Services.AddScoped<IFootballDataService>(sp => sp.GetRequiredService<SportApi7Service>());
+builder.Services.AddScoped<IFootballDataService, FootballDataService>();
 builder.Services.AddScoped<IOddsService>(sp => sp.GetRequiredService<SportApi7Service>());
 builder.Services.AddScoped<MatchSyncService>();
 
@@ -35,6 +35,7 @@ builder.Services.AddScoped<IAiAnalysisService, MatchAnalysisAgent>();
 // GraphQL
 builder.Services
     .AddGraphQLServer()
+    .ModifyRequestOptions(o => o.ExecutionTimeout = TimeSpan.FromMinutes(5))
     .AddQueryType()
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.MatchQuery>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.BetQuery>()

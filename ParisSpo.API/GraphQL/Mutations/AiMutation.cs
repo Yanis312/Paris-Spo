@@ -24,10 +24,15 @@ public class AiMutation
         [Service] IAiAnalysisService aiService)
     {
         var matches = await matchRepo.GetTodayMatchesAsync();
-        foreach (var match in matches)
+
+        // Analyse en parallèle par batch de 4 (évite rate limit OpenRouter)
+        foreach (var batch in matches.Chunk(4))
         {
-            match.AiAnalysis = await aiService.AnalyzeMatchAsync(match);
-            await matchRepo.UpsertAsync(match);
+            await Task.WhenAll(batch.Select(async match =>
+            {
+                match.AiAnalysis = await aiService.AnalyzeMatchAsync(match);
+                await matchRepo.UpsertAsync(match);
+            }));
         }
         return matches;
     }

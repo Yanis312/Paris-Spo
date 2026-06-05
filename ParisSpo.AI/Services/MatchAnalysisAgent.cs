@@ -152,34 +152,102 @@ Réponds:
 
     private static AiAnalysis MapToAnalysis(AiAnalysisDto dto, Match match)
     {
-        // Normalise les probabilités pour sommer à 1.0
+        // Normalise les probabilités IA pour sommer à 1.0
         var total = dto.HomeWinProbability + dto.DrawProbability + dto.AwayWinProbability;
         if (total <= 0) total = 1;
 
-        var bestOdds = match.Odds.FirstOrDefault();
+        var aiHome = dto.HomeWinProbability / total;
+        var aiDraw = dto.DrawProbability / total;
+        var aiAway = dto.AwayWinProbability / total;
+
+        // Ancre les probas IA au marché (cotes) pour éviter hallucinations sur ligues obscures.
+        // Marché = sagesse collective, IA = léger ajustement. Blend 70% marché / 30% IA.
+        var (homeP, drawP, awayP) = BlendWithMarket(match, aiHome, aiDraw, aiAway);
 
         return new AiAnalysis
         {
-            HomeWinProbability = dto.HomeWinProbability / total,
-            DrawProbability = dto.DrawProbability / total,
-            AwayWinProbability = dto.AwayWinProbability / total,
+            HomeWinProbability = homeP,
+            DrawProbability = drawP,
+            AwayWinProbability = awayP,
             ConfidenceScore = Math.Clamp(dto.ConfidenceScore, 0, 100),
             ForumSentiment = dto.ForumSentiment ?? "Sentiment non disponible",
             InjuryImpact = dto.InjuryImpact ?? "Données blessures non disponibles",
             AnalysisSummary = dto.AnalysisSummary ?? string.Empty,
             GeneratedAt = DateTime.UtcNow,
-            Suggestions = dto.Suggestions?.Select(s => new BetSuggestion
-            {
-                Market = Enum.TryParse<MarketType>(s.Market, true, out var m) ? m : MarketType.MatchWinner,
-                Description = s.Description,
-                TrueOdds = s.TrueOdds,
-                BookmakerOdds = s.BookmakerOdds,
-                ValueEdge = s.ValueEdge,
-                KellyFraction = Math.Clamp(s.KellyFraction, 0, 0.25), // max 25% bankroll
-                IsValueBet = s.IsValueBet && s.ValueEdge > 2,          // min 2% edge
-                Bookmaker = s.Bookmaker ?? bestOdds?.Bookmaker ?? "unknown"
-            }).ToList() ?? []
+            // Suggestions CALCULÉES depuis vraies cotes match × probas IA (pas hallucinées par LLM)
+            Suggestions = ComputeValueBets(match, homeP, drawP, awayP)
         };
+    }
+
+    /// <summary>
+    /// Ancre les probabilités IA aux probabilités implicites du marché (cotes, marge retirée).
+    /// Évite les hallucinations sur ligues obscures où l'IA ne connaît pas les équipes.
+    /// Blend pondéré : 70% marché + 30% IA.
+    /// </summary>
+    private static (double home, double draw, double away) BlendWithMarket(
+        Match match, double aiHome, double aiDraw, double aiAway)
+    {
+        var odds = match.Odds.FirstOrDefault();
+        if (odds == null || odds.HomeWin <= 1 || odds.Draw <= 1 || odds.AwayWin <= 1)
+            return (aiHome, aiDraw, aiAway); // pas de cotes → garde IA brute
+
+        // Proba implicite = 1/cote, normalisée (retire la marge bookmaker)
+        var rawH = 1.0 / odds.HomeWin;
+        var rawD = 1.0 / odds.Draw;
+        var rawA = 1.0 / odds.AwayWin;
+        var margin = rawH + rawD + rawA;
+        var mktH = rawH / margin;
+        var mktD = rawD / margin;
+        var mktA = rawA / margin;
+
+        const double wMarket = 0.60, wAi = 0.40;
+        var h = wMarket * mktH + wAi * aiHome;
+        var d = wMarket * mktD + wAi * aiDraw;
+        var a = wMarket * mktA + wAi * aiAway;
+        var sum = h + d + a;
+        return (h / sum, d / sum, a / sum);
+    }
+
+    /// <summary>
+    /// Calcule les value bets de façon déterministe : compare proba IA aux VRAIES cotes du match.
+    /// ValueEdge = proba_réelle × cote_bookmaker − 1. Positif = avantage mathématique.
+    /// Kelly = (cote × p − 1) / (cote − 1).
+    /// </summary>
+    private static List<BetSuggestion> ComputeValueBets(Match match, double homeP, double drawP, double awayP)
+    {
+        var odds = match.Odds.FirstOrDefault();
+        if (odds == null || odds.HomeWin <= 1) return [];
+
+        var outcomes = new[]
+        {
+            (Desc: $"Victoire {match.HomeTeamName}", Pick: "Home", Prob: homeP, Odd: odds.HomeWin),
+            (Desc: "Match nul", Pick: "Draw", Prob: drawP, Odd: odds.Draw),
+            (Desc: $"Victoire {match.AwayTeamName}", Pick: "Away", Prob: awayP, Odd: odds.AwayWin),
+        };
+
+        var suggestions = new List<BetSuggestion>();
+        foreach (var (desc, _, prob, odd) in outcomes)
+        {
+            if (odd <= 1) continue;
+
+            var edge = prob * odd - 1;              // espérance par unité misée
+            var kelly = (odd * prob - 1) / (odd - 1); // fraction Kelly
+
+            suggestions.Add(new BetSuggestion
+            {
+                Market = MarketType.MatchWinner,
+                Description = desc,
+                TrueOdds = prob > 0 ? Math.Round(1 / prob, 2) : 0,
+                BookmakerOdds = odd,                 // VRAIE cote du match
+                ValueEdge = Math.Round(edge * 100, 1),
+                KellyFraction = Math.Clamp(kelly, 0, 0.25),
+                IsValueBet = edge > 0.05 && prob > 0.10, // min 5% edge + proba crédible
+                Bookmaker = odds.Bookmaker
+            });
+        }
+
+        // garde seulement la meilleure value (ou toutes les positives)
+        return suggestions.OrderByDescending(s => s.ValueEdge).ToList();
     }
 
     private static AiAnalysis BuildFallbackAnalysis(Match match, string rawText)
