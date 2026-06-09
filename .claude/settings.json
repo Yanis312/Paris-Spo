@@ -89,7 +89,14 @@
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ allMatches { id apiFootballId homeTeamName awayTeamName } }\\\\\"}\")",
       "Bash(curl -s \"https://api.the-odds-api.com/v4/sports/?apiKey=4c884c2b1c06c6d16dde20d2610d6290\")",
       "Bash(curl -s \"https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey=4c884c2b1c06c6d16dde20d2610d6290&regions=eu&markets=h2h\")",
-      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { competitionName } }\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { competitionName } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeUpcoming { id } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName kickOff odds { homeWin } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { odds { homeWin } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName awayTeamName } }\\\\\"}\")",
+      "Bash(curl -s -i \"https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey=4c884c2b1c06c6d16dde20d2610d6290&regions=eu&markets=h2h\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName odds { homeWin draw awayWin } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName awayTeamName odds { homeWin draw awayWin } } }\\\\\"}\")"
     ]
   }
 }

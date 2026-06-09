@@ -37,18 +37,14 @@ public class TheOddsApiService : IOddsService
     public async Task<Dictionary<string, List<MatchOdds>>> GetWorldCupOddsMapAsync()
     {
         var result = new Dictionary<string, List<MatchOdds>>(StringComparer.OrdinalIgnoreCase);
-        try
+        var url = $"/v4/sports/soccer_fifa_world_cup/odds/?apiKey={_apiKey}&regions=eu&markets=h2h";
+        var events = await _http.GetFromJsonAsync<List<OddsEvent>>(url) ?? [];
+        foreach (var e in events)
         {
-            var url = $"/v4/sports/soccer_fifa_world_cup/odds/?apiKey={_apiKey}&regions=eu&markets=h2h,totals";
-            var events = await _http.GetFromJsonAsync<List<OddsEvent>>(url) ?? [];
-            foreach (var e in events)
-            {
-                var odds = MapOdds(e);
-                if (odds.Count > 0)
-                    result[NormKey(e.HomeTeam, e.AwayTeam)] = odds;
-            }
+            var odds = MapOdds(e);
+            if (odds.Count > 0)
+                result[NormKey(e.HomeTeam, e.AwayTeam)] = odds;
         }
-        catch { /* quota or network — return what we have */ }
         return result;
     }
 

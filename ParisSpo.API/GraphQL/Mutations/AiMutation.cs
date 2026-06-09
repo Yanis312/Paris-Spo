@@ -53,4 +53,23 @@ public class AiMutation
         }
         return matches;
     }
+
+    public async Task<List<Match>> AnalyzeUpcomingAsync(
+        [Service] IMatchRepository matchRepo,
+        [Service] IAiAnalysisService aiService)
+    {
+        var matches = (await matchRepo.GetUpcomingAsync(60))
+            .Where(m => m.Odds.Count > 0)        // que les matchs avec cotes
+            .ToList();
+
+        foreach (var batch in matches.Chunk(4))
+        {
+            await Task.WhenAll(batch.Select(async match =>
+            {
+                match.AiAnalysis = await aiService.AnalyzeMatchAsync(match);
+                await matchRepo.UpsertAsync(match);
+            }));
+        }
+        return matches;
+    }
 }

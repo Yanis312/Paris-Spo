@@ -49,6 +49,15 @@ public class MatchRepository : IMatchRepository
     public async Task UpsertAsync(Match match)
     {
         match.UpdatedAt = DateTime.UtcNow;
+
+        // Préserve l'_id existant (immutable) — sinon ReplaceOne tente de l'altérer
+        var existing = await _collection
+            .Find(m => m.ApiFootballId == match.ApiFootballId)
+            .FirstOrDefaultAsync();
+
+        if (existing != null)
+            match.Id = existing.Id;
+
         await _collection.ReplaceOneAsync(
             m => m.ApiFootballId == match.ApiFootballId,
             match,
