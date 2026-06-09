@@ -23,6 +23,7 @@ const sections = [
       { href: "/historique", label: "Historique",  icon: History },
       { href: "/bankroll",   label: "Bankroll",    icon: Wallet },
       { href: "/simulateur", label: "Simulateur",  icon: Calculator },
+      { href: "/simulation", label: "Simulation /jour", icon: TrendingUp },
     ],
   },
 ];

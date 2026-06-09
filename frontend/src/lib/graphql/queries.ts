@@ -1,5 +1,36 @@
 import { gql } from "@apollo/client/core";
 
+export const DAILY_SIMULATION = gql`
+  query DailySimulation($dailyBudget: Float!) {
+    dailySimulation(dailyBudget: $dailyBudget) {
+      date
+      dailyBudget
+      totalMatches
+      valueBetCount
+      totalStaked
+      expectedReturn
+      expectedProfit
+      actualReturn
+      actualProfit
+      hasResults
+      bets {
+        match
+        competition
+        pick
+        odds
+        probability
+        valueEdge
+        kellyFraction
+        stake
+        potentialReturn
+        expectedValue
+        result
+        actualReturn
+      }
+    }
+  }
+`;
+
 export const GET_TODAY_MATCHES = gql`
   query GetTodayMatches {
     todayMatches {

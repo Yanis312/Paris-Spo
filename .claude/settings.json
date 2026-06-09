@@ -70,7 +70,11 @@
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bankroll { currentAmount initialAmount } betStats { totalBets won pending totalStaked } }\\\\\"}\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { deleteBet\\(betId: \\\\\\\\\\\\\"6a208e4d0a2550e0be4be6e8\\\\\\\\\\\\\"\\) }\\\\\"}\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { resetBankroll }\\\\\"}\")",
-      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bets { id } bankroll { currentAmount } betStats { totalBets } }\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bets { id } bankroll { currentAmount } betStats { totalBets } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ dailySimulation\\(dailyBudget: 100\\) { valueBetCount totalMatches totalStaked expectedProfit hasResults bets { match pick odds stake expectedValue result } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ dailySimulationByDate\\(dailyBudget: 100, date: \\\\\\\\\\\\\"2026-06-05T00:00:00Z\\\\\\\\\\\\\"\\) { valueBetCount totalMatches totalStaked expectedReturn expectedProfit bets { match pick odds valueEdge stake potentialReturn } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeMatchesByDate\\(date: \\\\\\\\\\\\\"2026-06-05T00:00:00Z\\\\\\\\\\\\\"\\) { id } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ dailySimulationByDate\\(dailyBudget: 100, date: \\\\\\\\\\\\\"2026-06-05T00:00:00Z\\\\\\\\\\\\\"\\) { valueBetCount totalStaked expectedReturn expectedProfit bets { match pick odds valueEdge stake potentialReturn expectedValue } } }\\\\\"}\")"
     ]
   }
 }

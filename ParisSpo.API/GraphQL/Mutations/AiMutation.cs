@@ -36,4 +36,21 @@ public class AiMutation
         }
         return matches;
     }
+
+    public async Task<List<Match>> AnalyzeMatchesByDateAsync(
+        DateTime date,
+        [Service] IMatchRepository matchRepo,
+        [Service] IAiAnalysisService aiService)
+    {
+        var matches = await matchRepo.GetMatchesByDateAsync(date);
+        foreach (var batch in matches.Chunk(4))
+        {
+            await Task.WhenAll(batch.Select(async match =>
+            {
+                match.AiAnalysis = await aiService.AnalyzeMatchAsync(match);
+                await matchRepo.UpsertAsync(match);
+            }));
+        }
+        return matches;
+    }
 }

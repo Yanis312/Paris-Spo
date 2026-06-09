@@ -25,6 +25,7 @@ builder.Services.AddScoped<SportApi7Service>();
 builder.Services.AddScoped<IFootballDataService, FootballDataService>();
 builder.Services.AddScoped<IOddsService>(sp => sp.GetRequiredService<SportApi7Service>());
 builder.Services.AddScoped<MatchSyncService>();
+builder.Services.AddScoped<ParisSpo.Infrastructure.Services.SimulationService>();
 
 // AI — OpenRouter avec fallback infini sur modèles gratuits
 var openRouterKey = builder.Configuration["OpenRouter:ApiKey"] ?? "";
@@ -40,6 +41,7 @@ builder.Services
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.MatchQuery>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.BetQuery>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Queries.BankrollQuery>()
+    .AddTypeExtension<ParisSpo.API.GraphQL.Queries.SimulationQuery>()
     .AddMutationType()
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.BetMutation>()
     .AddTypeExtension<ParisSpo.API.GraphQL.Mutations.SyncMutation>()

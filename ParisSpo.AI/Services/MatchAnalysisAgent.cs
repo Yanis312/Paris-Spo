@@ -200,7 +200,7 @@ Réponds:
         var mktD = rawD / margin;
         var mktA = rawA / margin;
 
-        const double wMarket = 0.60, wAi = 0.40;
+        const double wMarket = 0.80, wAi = 0.20;
         var h = wMarket * mktH + wAi * aiHome;
         var d = wMarket * mktD + wAi * aiDraw;
         var a = wMarket * mktA + wAi * aiAway;
@@ -241,7 +241,8 @@ Réponds:
                 BookmakerOdds = odd,                 // VRAIE cote du match
                 ValueEdge = Math.Round(edge * 100, 1),
                 KellyFraction = Math.Clamp(kelly, 0, 0.25),
-                IsValueBet = edge > 0.05 && prob > 0.10, // min 5% edge + proba crédible
+                // value crédible : edge 5-20% (au-delà = hallucination), proba >15%, cote <6
+                IsValueBet = edge > 0.05 && edge < 0.20 && prob > 0.15 && odd < 6.0,
                 Bookmaker = odds.Bookmaker
             });
         }
