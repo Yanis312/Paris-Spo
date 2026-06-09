@@ -96,7 +96,8 @@
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName awayTeamName } }\\\\\"}\")",
       "Bash(curl -s -i \"https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey=4c884c2b1c06c6d16dde20d2610d6290&regions=eu&markets=h2h\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName odds { homeWin draw awayWin } } }\\\\\"}\")",
-      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName awayTeamName odds { homeWin draw awayWin } } }\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { homeTeamName awayTeamName odds { homeWin draw awayWin } } }\\\\\"}\")",
+      "mcp__claude_ai_Canva__generate-design"
     ]
   }
 }

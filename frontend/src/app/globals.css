@@ -35,64 +35,65 @@
   --radius-2xl: calc(var(--radius) * 1.8);
 }
 
-/* ─────────── DARK (default) ─────────── */
+/* ─────────── DARK (default) — Émeraude + Or premium ─────────── */
 :root, .dark {
-  --background: #0a0e1a;
-  --foreground: #e8edf5;
-  --card: #121829;
-  --card-foreground: #e8edf5;
-  --popover: #121829;
-  --popover-foreground: #e8edf5;
-  --primary: #16e87f;
-  --primary-foreground: #03110a;
-  --secondary: #1b2336;
-  --secondary-foreground: #c5cfe0;
-  --muted: #1b2336;
-  --muted-foreground: #7e8aa3;
-  --accent: #1f2a42;
-  --accent-foreground: #e8edf5;
-  --destructive: #ff4d5e;
-  --border: #232c44;
-  --input: #232c44;
-  --ring: #16e87f;
+  --background: #0b1120;
+  --foreground: #e2e8f0;
+  --card: #131c2e;
+  --card-foreground: #e2e8f0;
+  --popover: #131c2e;
+  --popover-foreground: #e2e8f0;
+  --primary: #10b981;
+  --primary-foreground: #04130c;
+  --secondary: #1b2638;
+  --secondary-foreground: #cbd5e1;
+  --muted: #1b2638;
+  --muted-foreground: #7c8aa3;
+  --accent: #213049;
+  --accent-foreground: #e2e8f0;
+  --destructive: #ef4444;
+  --border: #243049;
+  --input: #243049;
+  --ring: #10b981;
   --radius: 0.875rem;
-  --green: #16e87f;
-  --amber: #ffb020;
-  --red: #ff4d5e;
-  --blue: #4d9fff;
-  --purple: #a855f7;
-  --grad-1: #16e87f;
-  --grad-2: #0ea5e9;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --blue: #38bdf8;
+  --purple: #c084fc;
+  --gold: #f59e0b;
+  --grad-1: #10b981;
+  --grad-2: #f59e0b;
 }
 
 /* ─────────── LIGHT ─────────── */
 .light {
-  --background: #f4f6fb;
-  --foreground: #0a0e1a;
+  --background: #f6f8fb;
+  --foreground: #0b1120;
   --card: #ffffff;
-  --card-foreground: #0a0e1a;
+  --card-foreground: #0b1120;
   --popover: #ffffff;
-  --popover-foreground: #0a0e1a;
-  --primary: #00b85f;
+  --popover-foreground: #0b1120;
+  --primary: #059669;
   --primary-foreground: #ffffff;
-  --secondary: #eaeef6;
-  --secondary-foreground: #1b2336;
-  --muted: #eaeef6;
-  --muted-foreground: #5b6casd;
+  --secondary: #eef1f6;
+  --secondary-foreground: #1b2638;
+  --muted: #eef1f6;
   --muted-foreground: #64708a;
-  --accent: #e2e8f4;
-  --accent-foreground: #0a0e1a;
-  --destructive: #e11d48;
-  --border: #d7deea;
-  --input: #d7deea;
-  --ring: #00b85f;
-  --green: #00b85f;
-  --amber: #e8950c;
-  --red: #e11d48;
-  --blue: #2563eb;
+  --accent: #e4e9f1;
+  --accent-foreground: #0b1120;
+  --destructive: #dc2626;
+  --border: #d8dfeb;
+  --input: #d8dfeb;
+  --ring: #059669;
+  --green: #059669;
+  --amber: #d97706;
+  --red: #dc2626;
+  --blue: #0284c7;
   --purple: #9333ea;
-  --grad-1: #00b85f;
-  --grad-2: #0284c7;
+  --gold: #d97706;
+  --grad-1: #059669;
+  --grad-2: #d97706;
 }
 
 @layer base {
