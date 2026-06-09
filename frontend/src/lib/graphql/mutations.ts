@@ -69,3 +69,15 @@ export const INITIALIZE_BANKROLL = gql`
     }
   }
 `;
+
+export const DELETE_BET = gql`
+  mutation DeleteBet($betId: String!) {
+    deleteBet(betId: $betId)
+  }
+`;
+
+export const RESET_BANKROLL = gql`
+  mutation ResetBankroll {
+    resetBankroll
+  }
+`;

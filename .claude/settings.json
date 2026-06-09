@@ -62,7 +62,15 @@
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName aiAnalysis { confidenceScore suggestions { description valueEdge isValueBet } } } }\\\\\"}\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ todayMatches { id homeTeamName awayTeamName odds { homeWin } } }\\\\\"}\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName awayTeamName aiAnalysis { homeWinProbability awayWinProbability confidenceScore suggestions { description bookmakerOdds valueEdge isValueBet } } } }\\\\\"}\")",
-      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName awayTeamName odds { homeWin } aiAnalysis { suggestions { description bookmakerOdds valueEdge isValueBet } } } }\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { analyzeTodayMatches { homeTeamName awayTeamName odds { homeWin } aiAnalysis { suggestions { description bookmakerOdds valueEdge isValueBet } } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ todayMatches { homeTeamName } }\\\\\"}\")",
+      "Bash(curl -s -o /dev/null -w \"frontend: %{http_code}\\\\n\" http://localhost:3001)",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bets { id status placedAt selections { pick odds } } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { clearPendingBets }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bankroll { currentAmount initialAmount } betStats { totalBets won pending totalStaked } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { deleteBet\\(betId: \\\\\\\\\\\\\"6a208e4d0a2550e0be4be6e8\\\\\\\\\\\\\"\\) }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { resetBankroll }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ bets { id } bankroll { currentAmount } betStats { totalBets } }\\\\\"}\")"
     ]
   }
 }

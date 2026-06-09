@@ -2,10 +2,11 @@
 
 import { useQuery, useMutation } from "@apollo/client/react";
 import { GET_BETS, GET_BET_STATS } from "@/lib/graphql/queries";
-import { SETTLE_BET } from "@/lib/graphql/mutations";
+import { SETTLE_BET, DELETE_BET } from "@/lib/graphql/mutations";
+import { GET_BANKROLL } from "@/lib/graphql/queries";
 import type { Bet, BetStats } from "@/lib/graphql/types";
 import { StatsCard } from "@/components/stats-card";
-import { TrendingUp, Target, DollarSign, Clock, Zap, CheckCircle2, XCircle } from "lucide-react";
+import { TrendingUp, Target, DollarSign, Clock, Zap, CheckCircle2, XCircle, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
@@ -18,9 +19,9 @@ const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string }>
 export default function Historique() {
   const { data: betsData, loading } = useQuery<{ bets: Bet[] }>(GET_BETS);
   const { data: statsData } = useQuery<{ betStats: BetStats }>(GET_BET_STATS);
-  const [settleBet] = useMutation(SETTLE_BET, {
-    refetchQueries: [{ query: GET_BETS }, { query: GET_BET_STATS }],
-  });
+  const refetch = [{ query: GET_BETS }, { query: GET_BET_STATS }, { query: GET_BANKROLL }];
+  const [settleBet] = useMutation(SETTLE_BET, { refetchQueries: refetch });
+  const [deleteBet] = useMutation(DELETE_BET, { refetchQueries: refetch });
 
   const bets = betsData?.bets ?? [];
   const stats = statsData?.betStats;
@@ -114,24 +115,33 @@ export default function Historique() {
                         </span>
                       </td>
                       <td className="px-4 py-3.5 text-center">
-                        {bet.status === "PENDING" && (
-                          <div className="flex justify-center gap-1.5">
-                            <button
-                              onClick={() => settleBet({ variables: { betId: bet.id, result: "WON" } })}
-                              className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors"
-                              style={{ background: "color-mix(in oklch, var(--green) 15%, transparent)", color: "var(--green)" }}
-                            >
-                              <CheckCircle2 className="h-3 w-3" />Gagné
-                            </button>
-                            <button
-                              onClick={() => settleBet({ variables: { betId: bet.id, result: "LOST" } })}
-                              className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors"
-                              style={{ background: "color-mix(in oklch, var(--red) 15%, transparent)", color: "var(--red)" }}
-                            >
-                              <XCircle className="h-3 w-3" />Perdu
-                            </button>
-                          </div>
-                        )}
+                        <div className="flex justify-center gap-1.5">
+                          {bet.status === "PENDING" && (
+                            <>
+                              <button
+                                onClick={() => settleBet({ variables: { betId: bet.id, result: "WON" } })}
+                                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors"
+                                style={{ background: "color-mix(in oklch, var(--green) 15%, transparent)", color: "var(--green)" }}
+                              >
+                                <CheckCircle2 className="h-3 w-3" />Gagné
+                              </button>
+                              <button
+                                onClick={() => settleBet({ variables: { betId: bet.id, result: "LOST" } })}
+                                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors"
+                                style={{ background: "color-mix(in oklch, var(--red) 15%, transparent)", color: "var(--red)" }}
+                              >
+                                <XCircle className="h-3 w-3" />Perdu
+                              </button>
+                            </>
+                          )}
+                          <button
+                            onClick={() => deleteBet({ variables: { betId: bet.id } })}
+                            className="flex items-center justify-center rounded-lg p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                            title="Supprimer"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

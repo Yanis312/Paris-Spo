@@ -7,6 +7,21 @@ namespace ParisSpo.API.GraphQL.Mutations;
 [MutationType]
 public class BetMutation
 {
+    public async Task<bool> DeleteBetAsync(string betId, [Service] IBetRepository repo)
+    {
+        await repo.DeleteAsync(betId);
+        return true;
+    }
+
+    public async Task<long> ClearPendingBetsAsync([Service] IBetRepository repo)
+        => await repo.DeletePendingAsync();
+
+    public async Task<bool> ResetBankrollAsync([Service] IBankrollRepository repo)
+    {
+        await repo.ResetAsync();
+        return true;
+    }
+
     public async Task<Bet> PlaceBetAsync(
         PlaceBetInput input,
         [Service] IBetRepository betRepo,

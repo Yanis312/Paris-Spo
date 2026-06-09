@@ -45,4 +45,7 @@ public class BankrollRepository : IBankrollRepository
             .Set(b => b.UpdatedAt, DateTime.UtcNow);
         await _collection.UpdateOneAsync(_ => true, update);
     }
+
+    public async Task ResetAsync()
+        => await _collection.DeleteManyAsync(_ => true);
 }

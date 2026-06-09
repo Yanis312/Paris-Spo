@@ -8,4 +8,5 @@ public interface IBankrollRepository
     Task<Bankroll> InitializeAsync(double initialAmount);
     Task UpdateAsync(Bankroll bankroll);
     Task AddTransactionAsync(BankrollTransaction transaction);
+    Task ResetAsync();
 }

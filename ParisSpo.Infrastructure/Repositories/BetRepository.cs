@@ -36,6 +36,15 @@ public class BetRepository : IBetRepository
     public async Task UpdateAsync(Bet bet)
         => await _collection.ReplaceOneAsync(b => b.Id == bet.Id, bet);
 
+    public async Task DeleteAsync(string id)
+        => await _collection.DeleteOneAsync(b => b.Id == id);
+
+    public async Task<long> DeletePendingAsync()
+    {
+        var res = await _collection.DeleteManyAsync(b => b.Status == BetStatus.Pending);
+        return res.DeletedCount;
+    }
+
     public async Task<BetStats> GetStatsAsync()
     {
         var all = await GetAllAsync();

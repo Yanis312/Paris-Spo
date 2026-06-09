@@ -10,6 +10,8 @@ public interface IBetRepository
     Task<Bet?> GetByIdAsync(string id);
     Task<string> CreateAsync(Bet bet);
     Task UpdateAsync(Bet bet);
+    Task DeleteAsync(string id);
+    Task<long> DeletePendingAsync();
     Task<BetStats> GetStatsAsync();
 }
 
