@@ -14,4 +14,10 @@ public class MatchQuery
 
     public async Task<Match?> GetMatchAsync(string id, [Service] IMatchRepository repo)
         => await repo.GetByIdAsync(id);
+
+    public async Task<List<Match>> GetUpcomingMatchesAsync([Service] IMatchRepository repo)
+        => await repo.GetUpcomingAsync(60);
+
+    public async Task<List<Match>> GetAllMatchesAsync([Service] IMatchRepository repo)
+        => await repo.GetAllAsync();
 }

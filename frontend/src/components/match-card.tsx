@@ -27,7 +27,9 @@ export function MatchCard({ match, bankroll }: MatchCardProps) {
 
   const bestOdds = match.odds[0];
   const analysis = match.aiAnalysis;
-  const kickOff = new Date(match.kickOff).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  const ko = new Date(match.kickOff);
+  const kickOff = ko.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  const kickOffDate = ko.toLocaleDateString("fr-FR", { day: "2-digit", month: "short" });
   const valueBets = analysis?.suggestions.filter(s => s.isValueBet) ?? [];
   const compColor = competitionColor(match.competitionName);
   const isLive = match.status === "LIVE";
@@ -75,8 +77,10 @@ export function MatchCard({ match, bankroll }: MatchCardProps) {
             LIVE
           </span>
         ) : (
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />{kickOff}
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Clock className="h-3 w-3" />
+            <span className="font-medium text-foreground">{kickOffDate}</span>
+            {kickOff}
           </span>
         )}
       </div>

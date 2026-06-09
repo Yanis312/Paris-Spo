@@ -31,6 +31,28 @@ export const DAILY_SIMULATION = gql`
   }
 `;
 
+export const GET_UPCOMING_MATCHES = gql`
+  query GetUpcomingMatches {
+    upcomingMatches {
+      id
+      homeTeamName
+      awayTeamName
+      competitionName
+      kickOff
+      status
+      odds { bookmaker homeWin draw awayWin over25 under25 }
+      aiAnalysis {
+        homeWinProbability drawProbability awayWinProbability confidenceScore
+        suggestions { market description bookmakerOdds valueEdge kellyFraction isValueBet bookmaker }
+      }
+    }
+  }
+`;
+
+export const SYNC_WORLD_CUP = gql`
+  mutation SyncWorldCup { syncWorldCup { id } }
+`;
+
 export const GET_TODAY_MATCHES = gql`
   query GetTodayMatches {
     todayMatches {

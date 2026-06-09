@@ -57,6 +57,13 @@ public class FootballDataService : IFootballDataService
         return response?.Matches.Select(MapMatch).ToList() ?? [];
     }
 
+    /// <summary>Récupère TOUS les matchs de la Coupe du Monde 2026 (104 matchs).</summary>
+    public async Task<List<Match>> GetAllWorldCupMatchesAsync()
+    {
+        var response = await _http.GetFromJsonAsync<MatchesResponse>("/v4/competitions/2000/matches");
+        return response?.Matches.Select(MapMatch).ToList() ?? [];
+    }
+
     public async Task<Team?> GetTeamAsync(int teamId)
     {
         var response = await _http.GetFromJsonAsync<FdTeam>($"/v4/teams/{teamId}");
@@ -136,8 +143,8 @@ public class FootballDataService : IFootballDataService
         [property: JsonPropertyName("name")] string Name);
 
     private record FdTeamRef(
-        [property: JsonPropertyName("id")] int Id,
-        [property: JsonPropertyName("name")] string Name,
+        [property: JsonPropertyName("id")] int? Id,
+        [property: JsonPropertyName("name")] string? Name,
         [property: JsonPropertyName("shortName")] string? ShortName);
 
     private record FdScore(

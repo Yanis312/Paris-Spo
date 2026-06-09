@@ -25,6 +25,38 @@ public class MatchSyncService
 
     public Task<List<Match>> SyncTodayMatchesAsync() => SyncMatchesByDateAsync(DateTime.UtcNow);
 
+    /// <summary>Charge les 104 matchs de la Coupe du Monde 2026 dans MongoDB.</summary>
+    public async Task<List<Match>> SyncWorldCupAsync()
+    {
+        if (_footballData is not FootballDataService fd)
+        {
+            _logger.LogWarning("WorldCup sync requires FootballDataService");
+            return [];
+        }
+
+        List<Match> matches;
+        try
+        {
+            matches = await fd.GetAllWorldCupMatchesAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to fetch World Cup matches");
+            throw;
+        }
+
+        // garde seulement matchs avec équipes connues (exclut TBD phases finales)
+        var known = matches.Where(m => m.HomeTeamName != "?" && m.AwayTeamName != "?").ToList();
+        _logger.LogInformation("WC: {Total} fetched, {Known} with known teams", matches.Count, known.Count);
+
+        foreach (var match in known)
+        {
+            try { await _matchRepo.UpsertAsync(match); }
+            catch (Exception ex) { _logger.LogError(ex, "Failed WC match {Id}", match.ApiFootballId); }
+        }
+        return known;
+    }
+
     public async Task<List<Match>> SyncMatchesByDateAsync(DateTime date)
     {
         List<Match> matches;

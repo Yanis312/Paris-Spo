@@ -61,4 +61,17 @@ public class MatchRepository : IMatchRepository
             .SortByDescending(m => m.KickOff)
             .Limit(count)
             .ToListAsync();
+
+    public async Task<List<Match>> GetUpcomingAsync(int days = 60)
+    {
+        var now = DateTime.UtcNow.Date;
+        var until = now.AddDays(days);
+        return await _collection
+            .Find(m => m.KickOff >= now && m.KickOff < until)
+            .SortBy(m => m.KickOff)
+            .ToListAsync();
+    }
+
+    public async Task<List<Match>> GetAllAsync()
+        => await _collection.Find(_ => true).SortBy(m => m.KickOff).ToListAsync();
 }

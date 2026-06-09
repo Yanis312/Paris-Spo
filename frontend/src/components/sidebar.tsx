@@ -14,7 +14,8 @@ const sections = [
     title: "Principal",
     links: [
       { href: "/",           label: "Dashboard",  icon: LayoutDashboard },
-      { href: "/paris",      label: "Paris du jour", icon: Trophy },
+      { href: "/calendrier", label: "Calendrier WC", icon: Trophy },
+      { href: "/paris",      label: "Paris du jour", icon: Zap },
     ],
   },
   {

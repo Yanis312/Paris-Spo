@@ -14,4 +14,7 @@ public class SyncMutation
 
     public async Task<List<Match>> SyncMatchesByDateAsync(DateTime date, [Service] MatchSyncService syncService)
         => await syncService.SyncMatchesByDateAsync(date);
+
+    public async Task<List<Match>> SyncWorldCupAsync([Service] MatchSyncService syncService)
+        => await syncService.SyncWorldCupAsync();
 }

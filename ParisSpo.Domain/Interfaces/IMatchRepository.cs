@@ -10,4 +10,6 @@ public interface IMatchRepository
     Task<Match?> GetByApiFootballIdAsync(int apiId);
     Task UpsertAsync(Match match);
     Task<List<Match>> GetRecentFinishedAsync(int count = 20);
+    Task<List<Match>> GetUpcomingAsync(int days = 60);
+    Task<List<Match>> GetAllAsync();
 }
