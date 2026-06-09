@@ -8,17 +8,20 @@ public class MatchSyncService
 {
     private readonly IFootballDataService _footballData;
     private readonly SportApi7Service _sportApi7;
+    private readonly TheOddsApiService _oddsApi;
     private readonly IMatchRepository _matchRepo;
     private readonly ILogger<MatchSyncService> _logger;
 
     public MatchSyncService(
         IFootballDataService footballData,
         SportApi7Service sportApi7,
+        TheOddsApiService oddsApi,
         IMatchRepository matchRepo,
         ILogger<MatchSyncService> logger)
     {
         _footballData = footballData;
         _sportApi7 = sportApi7;
+        _oddsApi = oddsApi;
         _matchRepo = matchRepo;
         _logger = logger;
     }
@@ -47,10 +50,18 @@ public class MatchSyncService
 
         // garde seulement matchs avec équipes connues (exclut TBD phases finales)
         var known = matches.Where(m => m.HomeTeamName != "?" && m.AwayTeamName != "?").ToList();
-        _logger.LogInformation("WC: {Total} fetched, {Known} with known teams", matches.Count, known.Count);
+
+        // Récupère TOUTES les cotes WC en 1 appel The Odds API
+        var oddsMap = await _oddsApi.GetWorldCupOddsMapAsync();
+        _logger.LogInformation("WC: {Total} fetched, {Known} known, {Odds} odds entries",
+            matches.Count, known.Count, oddsMap.Count);
 
         foreach (var match in known)
         {
+            // matche les cotes par nom d'équipe (normalisé)
+            var odds = MatchOddsTo(match, oddsMap);
+            if (odds != null) match.Odds = odds;
+
             try { await _matchRepo.UpsertAsync(match); }
             catch (Exception ex) { _logger.LogError(ex, "Failed WC match {Id}", match.ApiFootballId); }
         }
@@ -97,6 +108,28 @@ public class MatchSyncService
 
         return matches;
     }
+
+    // matche les cotes (clé "home|away" normalisée) à un match, avec fuzzy sur les noms
+    private static List<MatchOdds>? MatchOddsTo(Match m, Dictionary<string, List<MatchOdds>> oddsMap)
+    {
+        var h = Simplify(m.HomeTeamName);
+        var a = Simplify(m.AwayTeamName);
+
+        foreach (var kvp in oddsMap)
+        {
+            var parts = kvp.Key.Split('|');
+            if (parts.Length != 2) continue;
+            var oh = parts[0]; var oa = parts[1];
+            // match si un nom contient l'autre (gère "USA" vs "United States", "Korea" vs "Korea Republic")
+            bool homeMatch = oh.Contains(h) || h.Contains(oh);
+            bool awayMatch = oa.Contains(a) || a.Contains(oa);
+            if (homeMatch && awayMatch) return kvp.Value;
+        }
+        return null;
+    }
+
+    private static string Simplify(string s)
+        => new(s.ToLowerInvariant().Where(char.IsLetter).ToArray());
 
     public async Task<Match?> SyncMatchOddsAsync(string matchId)
     {

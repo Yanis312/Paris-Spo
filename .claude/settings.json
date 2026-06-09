@@ -85,7 +85,11 @@
       "Bash(grep -iA8 \"exception\\\\|error\" \"C:\\\\Users\\\\SURFAG~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Surfagest-Documents-Paris-spo\\\\7f476b8e-4c93-43c5-9731-6cccf59048f7\\\\tasks\\\\brsx3w5kl.output\")",
       "Bash(grep -iA6 \"exception\\\\|WC:\" \"C:\\\\Users\\\\SURFAG~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-Surfagest-Documents-Paris-spo\\\\7f476b8e-4c93-43c5-9731-6cccf59048f7\\\\tasks\\\\bpskirsvh.output\")",
       "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"mutation { syncWorldCup { id homeTeamName awayTeamName kickOff } }\\\\\"}\")",
-      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { id } }\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { id } }\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ allMatches { id apiFootballId homeTeamName awayTeamName } }\\\\\"}\")",
+      "Bash(curl -s \"https://api.the-odds-api.com/v4/sports/?apiKey=4c884c2b1c06c6d16dde20d2610d6290\")",
+      "Bash(curl -s \"https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds/?apiKey=4c884c2b1c06c6d16dde20d2610d6290&regions=eu&markets=h2h\")",
+      "Bash(curl -s -X POST http://localhost:5000/graphql -H \"Content-Type: application/json\" -d \"{\\\\\"query\\\\\":\\\\\"{ upcomingMatches { competitionName } }\\\\\"}\")"
     ]
   }
 }

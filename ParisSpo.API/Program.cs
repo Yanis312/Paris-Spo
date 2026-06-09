@@ -20,10 +20,11 @@ builder.Services.AddScoped<IBetRepository, BetRepository>();
 builder.Services.AddScoped<IBankrollRepository, BankrollRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
-// External services — football-data.org = matchs, SportAPI7 = cotes (si quota dispo)
+// External services — football-data.org = matchs, The Odds API = cotes WC
 builder.Services.AddScoped<SportApi7Service>();
+builder.Services.AddScoped<TheOddsApiService>();
 builder.Services.AddScoped<IFootballDataService, FootballDataService>();
-builder.Services.AddScoped<IOddsService>(sp => sp.GetRequiredService<SportApi7Service>());
+builder.Services.AddScoped<IOddsService>(sp => sp.GetRequiredService<TheOddsApiService>());
 builder.Services.AddScoped<MatchSyncService>();
 builder.Services.AddScoped<ParisSpo.Infrastructure.Services.SimulationService>();
 

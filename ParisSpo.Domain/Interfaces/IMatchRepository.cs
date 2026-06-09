@@ -12,4 +12,5 @@ public interface IMatchRepository
     Task<List<Match>> GetRecentFinishedAsync(int count = 20);
     Task<List<Match>> GetUpcomingAsync(int days = 60);
     Task<List<Match>> GetAllAsync();
+    Task DeleteByApiIdAsync(int apiFootballId);
 }

@@ -33,6 +33,31 @@ public class TheOddsApiService : IOddsService
         _http = new HttpClient { BaseAddress = new Uri(settings.Value.BaseUrl) };
     }
 
+    /// <summary>Récupère toutes les cotes WC 2026 (1 appel API). Retourne map par "home|away".</summary>
+    public async Task<Dictionary<string, List<MatchOdds>>> GetWorldCupOddsMapAsync()
+    {
+        var result = new Dictionary<string, List<MatchOdds>>(StringComparer.OrdinalIgnoreCase);
+        try
+        {
+            var url = $"/v4/sports/soccer_fifa_world_cup/odds/?apiKey={_apiKey}&regions=eu&markets=h2h,totals";
+            var events = await _http.GetFromJsonAsync<List<OddsEvent>>(url) ?? [];
+            foreach (var e in events)
+            {
+                var odds = MapOdds(e);
+                if (odds.Count > 0)
+                    result[NormKey(e.HomeTeam, e.AwayTeam)] = odds;
+            }
+        }
+        catch { /* quota or network — return what we have */ }
+        return result;
+    }
+
+    private static string NormKey(string home, string away)
+        => $"{Simplify(home)}|{Simplify(away)}";
+
+    private static string Simplify(string s)
+        => new string(s.ToLowerInvariant().Where(char.IsLetter).ToArray());
+
     public async Task<List<MatchOdds>> GetOddsForMatchAsync(string homeTeam, string awayTeam, DateTime kickOff)
     {
         var allOdds = new List<MatchOdds>();

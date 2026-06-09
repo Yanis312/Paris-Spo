@@ -17,4 +17,10 @@ public class SyncMutation
 
     public async Task<List<Match>> SyncWorldCupAsync([Service] MatchSyncService syncService)
         => await syncService.SyncWorldCupAsync();
+
+    public async Task<bool> DeleteMatchByApiIdAsync(int apiFootballId, [Service] ParisSpo.Domain.Interfaces.IMatchRepository repo)
+    {
+        await repo.DeleteByApiIdAsync(apiFootballId);
+        return true;
+    }
 }

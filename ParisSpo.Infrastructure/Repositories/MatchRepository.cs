@@ -74,4 +74,7 @@ public class MatchRepository : IMatchRepository
 
     public async Task<List<Match>> GetAllAsync()
         => await _collection.Find(_ => true).SortBy(m => m.KickOff).ToListAsync();
+
+    public async Task DeleteByApiIdAsync(int apiFootballId)
+        => await _collection.DeleteOneAsync(m => m.ApiFootballId == apiFootballId);
 }
